@@ -19,8 +19,12 @@ class ChatGPT:
 
 
 def main():
+    API_KEY = "YOUR_API_KEY_HERE"
     chat = ChatGPT(API_KEY)
     while True:
         user_input = input("You: ")
         response = chat.chat(user_input)
         print("Chatbot: ", response)
+        
+if __name__ == "__main__":
+    main()
