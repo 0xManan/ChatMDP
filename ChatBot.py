@@ -17,9 +17,10 @@ class ChatGPT:
         message = completions.choices[0].text
         return message
 
-# Instantiate the ChatGPT class with your API key
-chat = ChatGPT(API_KEY)
 
-# Use the chat() function to generate a response to a prompt
-response = chat.chat("Hello, how are you?")
-print(response)
+def main():
+    chat = ChatGPT(API_KEY)
+    while True:
+        user_input = input("You: ")
+        response = chat.chat(user_input)
+        print("Chatbot: ", response)
