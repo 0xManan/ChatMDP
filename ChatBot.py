@@ -2,14 +2,18 @@ import openai
 
 openai.api_key = "YOUR_API_KEY"
 
-def generate_response(prompt):
-    response = openai.Completion.create(
-        engine="text-davinci-002",
+def generate_response(prompt, temperature=0.5, max_tokens=2048, stop=None, engine="text-davinci-002"):
+    completions = openai.Completion.create(
+        engine=engine,
         prompt=prompt,
-        max_tokens=2048,
-        temperature=0.5
+        temperature=temperature,
+        max_tokens=max_tokens,
+        stop=stop,
+        n=1
     )
-    return response.choices[0].text
+
+    message = completions.choices[0].text
+    return message.strip()
 
 def main():
     print("Welcome to the chatbot, type 'exit' to leave.")
@@ -28,6 +32,7 @@ def main():
             prompt = f"{priming_text}\n{user_input}\n"
             chatbot_response = generate_response(prompt)
             print("Chatbot: " + chatbot_response)
+            priming_text = f"{priming_text}\n{user_input}\n{chatbot_response}\n"
 
 if __name__ == "__main__":
     main()
