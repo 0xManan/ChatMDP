@@ -34,4 +34,8 @@ try:
         df = pd.DataFrame(data)
         if not os.path.exists(filename):
             df.to_csv(filename)
-       
+        else:
+            df.to_csv(filename, mode='a', header=False)
+    print(message)
+except Exception as e:
+    print("Error Occured:",e)
