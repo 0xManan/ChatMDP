@@ -1,15 +1,11 @@
-import openai_secret_manager
 import openai
 import textwrap
 import os
 import pandas as pd
 from tqdm import tqdm
 
-# Let's setup the API key
-assert "openai" in openai_secret_manager.get_services()
-secrets = openai_secret_manager.get_secrets("openai")
-
-openai.api_key = secrets["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"]
+# Set the API key
+openai.api_key = "<YOUR_API_KEY>"
 
 try:
     prompt = input("Enter the prompt for the model: ")
@@ -38,8 +34,4 @@ try:
         df = pd.DataFrame(data)
         if not os.path.exists(filename):
             df.to_csv(filename)
-        else:
-            df.to_csv(filename, mode='a', header=False)
-    print(message)
-except Exception as e:
-    print("Error Occured:",e)
+       
