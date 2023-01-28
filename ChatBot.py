@@ -1,30 +1,31 @@
 import openai
 
-# Use the API key from your OpenAI account
+# Your OpenAI API key
 openai.api_key = "YOUR_API_KEY"
 
-# Store previous conversation in a list
-conversation = []
-
-while True:
-    # Take user input
-    user_input = input("You: ")
-    conversation.append(user_input)
-
-    # Define the prompt that you want to generate text for
-    prompt = (f"{' '.join(conversation)}")
-
-    # Use the `Completion` API to generate text
-    completions = openai.Completion.create(
+def generate_response(prompt):
+    response = openai.Completion.create(
         engine="text-davinci-002",
         prompt=prompt,
-        max_tokens=1024,
-        n=1,
-        stop=None,
-        temperature=0.5,
+        max_tokens=2048,
+        temperature=0.5
     )
+    return response.choices[0].text
 
-    # The `completions` variable will now contain the generated text
-    generated_text = completions.choices[0].text
-    print("AI: ", generated_text)
-    conversation.append(generated_text)
+def main():
+    print("Welcome to the chatbot, type 'exit' to leave.")
+    while True:
+        user_input = input("You: ")
+        if user_input.strip().lower() == "exit":
+            print("Thank you for using our chatbot, have a good day!")
+            break
+        elif user_input.strip() == "":
+            print("Please enter a valid input.")
+            continue
+        else:
+            prompt = f"{user_input}\n"
+            chatbot_response = generate_response(prompt)
+            print("Chatbot: " + chatbot_response)
+
+if __name__ == "__main__":
+    main()
