@@ -1,6 +1,5 @@
 import openai
 
-# Your OpenAI API key
 openai.api_key = "YOUR_API_KEY"
 
 def generate_response(prompt):
@@ -14,6 +13,9 @@ def generate_response(prompt):
 
 def main():
     print("Welcome to the chatbot, type 'exit' to leave.")
+    # Prime the model with some context
+    priming_text = "Hello, I am a chatbot. How can I help you today?"
+    print("Chatbot: " + priming_text)
     while True:
         user_input = input("You: ")
         if user_input.strip().lower() == "exit":
@@ -23,7 +25,7 @@ def main():
             print("Please enter a valid input.")
             continue
         else:
-            prompt = f"{user_input}\n"
+            prompt = f"{priming_text}\n{user_input}\n"
             chatbot_response = generate_response(prompt)
             print("Chatbot: " + chatbot_response)
 
