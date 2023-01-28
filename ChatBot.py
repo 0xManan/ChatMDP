@@ -1,41 +1,30 @@
 import openai
-import textwrap
-import os
-import pandas as pd
-from tqdm import tqdm
 
-# Set the API key
-openai.api_key = "<YOUR_API_KEY>"
+# Use the API key from your OpenAI account
+openai.api_key = "YOUR_API_KEY"
 
-try:
-    prompt = input("Enter the prompt for the model: ")
-    num_tokens = int(input("Enter the number of tokens to generate: "))
-    model = input("Enter the model to use(text-davinci-002 or text-curie-001):")
-    temperature = float(input("Enter temperature (default is 0.5):"))
-    stop = input("Enter the stop token(if any): ")
-    n = int(input("Enter the number of completions to generate: "))
-    filename = input("Enter the filename to save the output:")
-    if stop=="":
-        stop = None
-    data = []
-    for i in tqdm(range(n)):
-        completions = openai.Completion.create(
-            engine=model,
-            prompt=prompt,
-            max_tokens=num_tokens,
-            n=1,
-            stop=stop,
-            temperature=temperature,
-        )
-        message = completions.choices[0].text
-        message = textwrap.fill(message,width=80)
-        data.append({'generated_text': message, 'prompt': prompt, 'model': model, 'stop':stop, 'temperature': temperature})
-    if filename:
-        df = pd.DataFrame(data)
-        if not os.path.exists(filename):
-            df.to_csv(filename)
-        else:
-            df.to_csv(filename, mode='a', header=False)
-    print(message)
-except Exception as e:
-    print("Error Occured:",e)
+# Store previous conversation in a list
+conversation = []
+
+while True:
+    # Take user input
+    user_input = input("You: ")
+    conversation.append(user_input)
+
+    # Define the prompt that you want to generate text for
+    prompt = (f"{' '.join(conversation)}")
+
+    # Use the `Completion` API to generate text
+    completions = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=prompt,
+        max_tokens=1024,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+
+    # The `completions` variable will now contain the generated text
+    generated_text = completions.choices[0].text
+    print("AI: ", generated_text)
+    conversation.append(generated_text)
